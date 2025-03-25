@@ -1,39 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const sentenceInput = document.getElementById('sentenceInput');
-  const repeatCountInput = document.getElementById('repeatCount');
-  const lastSentenceInput = document.getElementById('lastSentence');
+  const sentenceContainer = document.getElementById('sentenceContainer');
+  const addSentenceBtn = document.getElementById('addSentence');
   const startProcessBtn = document.getElementById('startProcess');
 
-  // Retrieve last sentence from storage
-  chrome.storage.sync.get('lastSentence', (data) => {
-    if (data.lastSentence) {
-      lastSentenceInput.value = data.lastSentence;
-    }
+  chrome.storage.sync.get('sentences', (data) => {
+    const sentences = data.sentences || [];
+    sentences.forEach(({ sentence, count }) => addSentenceRow(sentence, count));
   });
 
+  addSentenceBtn.addEventListener('click', () => addSentenceRow('', 1));
+
   startProcessBtn.addEventListener('click', () => {
-    const sentence = sentenceInput.value.trim();
-    const repeatCount = parseInt(repeatCountInput.value, 10);
-
-    if (!sentence) {
-      alert("Please enter a sentence.");
-      return;
-    }
-
-    // Save last sentence
-    chrome.storage.sync.set({ lastSentence: sentence });
-
+    const rows = sentenceContainer.querySelectorAll('.sentenceRow');
+    const sentences = Array.from(rows).map(row => ({
+      sentence: row.querySelector('.sentenceInput').value,
+      count: parseInt(row.querySelector('.repeatInput').value, 10)
+    }));
+    chrome.storage.sync.set({ sentences });
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
         func: startAutofillProcess,
-        args: [sentence, repeatCount]
+        args: [sentences]
       });
     });
   });
+
+  function addSentenceRow(sentence = '', count = 1) {
+    const div = document.createElement('div');
+    div.className = 'sentenceRow';
+    div.style.display = 'flex';
+    div.style.marginBottom = '5px';
+    div.innerHTML = `
+      <input type="text" class="sentenceInput" placeholder="Sentence" value="${sentence}" style="flex: 2; margin-right: 5px;" />
+      <input type="number" class="repeatInput" placeholder="Repeat" min="1" value="${count}" style="flex: 1;" />
+    `;
+    sentenceContainer.appendChild(div);
+  }
 });
 
-function startAutofillProcess(sentence, repeatCount) {
+function startAutofillProcess(sentences) {
   const MIN_WIDTH = 300;
   const MIN_HEIGHT = 100;
   const textInputs = Array.from(document.querySelectorAll('textarea, input[type="text"]')).filter(input => {
@@ -44,15 +50,19 @@ function startAutofillProcess(sentence, repeatCount) {
       (rect.width >= MIN_WIDTH || rect.height >= MIN_HEIGHT);
   });
 
-  for (let i = 0; i < textInputs.length && i < repeatCount; i++) {
-    const input = textInputs[i];
-    input.focus();
-    input.value = sentence;
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-    input.style.outline = '2px solid #28a745';
-    input.style.backgroundColor = '#eaffea';
-  }
+  let index = 0;
+  sentences.forEach(({ sentence, count }) => {
+    for (let i = 0; i < count && index < textInputs.length; i++) {
+      const input = textInputs[index];
+      input.focus();
+      input.value = sentence;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.style.outline = '2px solid #28a745';
+      input.style.backgroundColor = '#eaffea';
+      index++;
+    }
+  });
 
   const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(checkbox => {
     const style = window.getComputedStyle(checkbox);
