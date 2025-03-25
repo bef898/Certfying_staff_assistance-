@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Certifying staff assistant",
+  "version": "1.1",
+  "description": "Fills large textboxes, checks checkboxes, clicks buttons, and handles page redirection with enhanced UI.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
+  
