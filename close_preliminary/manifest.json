@@ -1,18 +1,19 @@
 {
-    "manifest_version": 3,
-    "name": "Task Automator",
-    "version": "1.0",
-    "description": "Automates clicking and filling forms on a webpage.",
-    "permissions": ["scripting", "activeTab", "storage"],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": ["content.js"],
-        "run_at": "document_idle"
-      }
-    ],
-    "host_permissions": ["<all_urls>"]
-  }
+  "manifest_version": 3,
+  "name": "Task Automator",
+  "version": "1.0",
+  "description": "Automates clicking and filling forms on a webpage.",
+  "permissions": ["scripting", "activeTab", "storage"],
+  "background": {
+  "service_worker": "background.js",
+  "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": ["http://*/*", "https://*/*"]
+}
