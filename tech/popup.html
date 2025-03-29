@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Smart Field Filler</h1>
+      <p class="subtitle">Professional form automation</p>
+    </div>
+    
+    <div class="file-upload">
+      <label for="textFileInput" class="file-label">
+        <svg class="file-icon" viewBox="0 0 24 24">
+          <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+        </svg>
+        <span id="fileName">Choose sentences file</span>
+      </label>
+      <input type="file" id="textFileInput" accept=".txt">
+    </div>
+
+    <div class="options">
+      <label class="checkbox-container">
+        <input type="checkbox" id="checkCheckboxes" checked>
+        <span class="checkmark"></span>
+        <span>Check all checkboxes</span>
+      </label>
+      
+      <label class="checkbox-container">
+        <input type="checkbox" id="largeFieldsOnly" checked>
+        <span class="checkmark"></span>
+        <span>Fill only large fields</span>
+      </label>
+
+      <label class="checkbox-container">
+        <input type="checkbox" id="setPartialDropdowns" checked>
+        <span class="checkmark"></span>
+        <span>Set dropdowns to "Partial"</span>
+      </label>
+    </div>
+
+    <button id="fillFields" class="action-button">
+      <span class="button-text">Fill Fields</span>
+      <svg class="button-icon" viewBox="0 0 24 24">
+        <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+      </svg>
+    </button>
+
+    <div id="status" class="status-message status-info">
+      Ready to fill fields
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
