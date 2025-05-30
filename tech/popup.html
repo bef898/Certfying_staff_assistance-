@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="styles.css">
+  <style>
+      #icon { display: block; margin: 0 auto; width: 100px; }
+   </style> 
 </head>
 <body>
+  <img id="icon" src="C:\Users\befekadum\Documents\CS\Certfying_staff_assistance-\tech\icons\icon128.png" alt="Extension Icon">
   <div class="container">
     <div class="header">
-      <h1>Smart Field Filler</h1>
-      <p class="subtitle">Professional form automation</p>
+      <h1>Tech assistant</h1>
+      <p class="subtitle">completes task</p>
     </div>
     
     <div class="file-upload">
@@ -42,7 +46,7 @@
     </div>
 
     <button id="fillFields" class="action-button">
-      <span class="button-text">Fill Fields</span>
+      <span class="button-text">EXECUTE</span>
       <svg class="button-icon" viewBox="0 0 24 24">
         <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
       </svg>
@@ -51,6 +55,14 @@
     <div id="status" class="status-message status-info">
       Ready to fill fields
     </div>
+  </div>
+  <div class="options">
+    <!-- Previous checkboxes... -->
+    <label class="checkbox-container">
+      <input type="checkbox" id="clickOkButton" checked>
+      <span class="checkmark"></span>
+      <span>Click "OK" button</span>
+    </label>
   </div>
   <script src="popup.js"></script>
 </body>

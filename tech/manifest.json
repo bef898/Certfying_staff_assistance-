@@ -1,15 +1,14 @@
 {
     "manifest_version": 3,
-    "name": "Smart Field Filler",
+    "name": "TECHNICIAN ASSISTANT",
     "version": "1.0",
     "description": "Professional form automation tool",
     "action": {
       "default_popup": "popup.html",
-      "default_icon": {
-        "16": "icons/icon16.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
-      }
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
     },
     "permissions": ["activeTab", "scripting"],
     "content_scripts": [
