@@ -153,16 +153,20 @@ function closePreliminaryProcess(sentences) {
       (rect.width >= MIN_WIDTH || rect.height >= MIN_HEIGHT);
   });
 
-  // 2. Fill only the first 7 textareas/inputs (except the last one)
-  let index = 0;
-  for (; index < 7 && index < textInputs.length - 1 && index < sentences.length - 1; index++) {
-    const input = textInputs[index];
-    input.focus();
-    input.value = sentences[index].sentence;
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-    input.style.outline = '2px solid #007bff';
-    input.style.backgroundColor = '#eaf0ff';
+  // 2. Fill only the first 7 sentences/inputs (except the last sentence), starting from the second input
+  let inputIdx = 1; // Start from the second input
+  for (let s = 0; s < 7 && s < sentences.length - 1 && inputIdx < textInputs.length - 1; s++) {
+    const { sentence, count } = sentences[s];
+    for (let i = 0; i < count && inputIdx < textInputs.length - 1; i++) {
+      const input = textInputs[inputIdx];
+      input.focus();
+      input.value = sentence;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.style.outline = '2px solid #007bff';
+      input.style.backgroundColor = '#eaf0ff';
+      inputIdx++;
+    }
   }
 
   // 3. Put the last sentence in the last textarea/input on the page
