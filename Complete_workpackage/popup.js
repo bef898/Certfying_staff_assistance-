@@ -21,15 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
       count: parseInt(row.querySelector('.repeatInput').value, 10)
     }));
 
-    // Save sentences to storage
+    const preliminaryPerformed = document.getElementById('preliminaryPerformed').checked;
+
     chrome.storage.sync.set({ sentences });
 
-    // Execute autofill function in the active tab
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.scripting.executeScript({
         target: { tabId: tabs[0].id },
         func: startAutofillProcess,
-        args: [sentences]
+        args: [sentences, preliminaryPerformed]
       });
     });
   });
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Function for autofill process, clicking "OK," and handling the new page "Cancel" button
-function startAutofillProcess(sentences) {
+function startAutofillProcess(sentences, preliminaryPerformed) {
   const MIN_WIDTH = 300;
   const MIN_HEIGHT = 100;
 
@@ -102,19 +102,39 @@ function startAutofillProcess(sentences) {
   });
 
   let index = 0;
-  sentences.forEach(({ sentence, count }) => {
-    for (let i = 0; i < count && index < textInputs.length; i++) {
-      const input = textInputs[index];
-      input.focus();
-      input.value = sentence;
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-      input.style.outline = '2px solid #28a745';
-      input.style.backgroundColor = '#eaffea';
-      index++;
-    }
-  });
 
+  if (preliminaryPerformed) {
+    // Skip the first 7 sentences, fill the rest except the last sentence
+    for (let s = 7; s < sentences.length - 1 && index < textInputs.length; s++) {
+      const { sentence, count } = sentences[s];
+      for (let i = 0; i < count && index < textInputs.length; i++) {
+        const input = textInputs[index];
+        input.focus();
+        input.value = sentence;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        input.style.outline = '2px solid #28a745';
+        input.style.backgroundColor = '#eaffea';
+        index++;
+      }
+    }
+  } else {
+    // Fill all sentences except the last
+    sentences.slice(0, -1).forEach(({ sentence, count }) => {
+      for (let i = 0; i < count && index < textInputs.length; i++) {
+        const input = textInputs[index];
+        input.focus();
+        input.value = sentence;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        input.style.outline = '2px solid #28a745';
+        input.style.backgroundColor = '#eaffea';
+        index++;
+      }
+    });
+  }
+
+  // Check all visible checkboxes
   const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(checkbox => {
     const style = window.getComputedStyle(checkbox);
     return style.display !== 'none' && style.visibility !== 'hidden' &&
@@ -127,14 +147,23 @@ function startAutofillProcess(sentences) {
     }
   });
 
+  // Click "Complete All" button if present
   const completeAllBtn = document.getElementById('idButtonCompleteAll');
   if (completeAllBtn) completeAllBtn.click();
 
+  // Click OK and Close buttons with delay
   setTimeout(() => {
     const okBtn = document.getElementById('idButtonOk');
     if (okBtn) {
       okBtn.click();
       console.log('OK button clicked');
+      setTimeout(() => {
+        const closeBtn = document.getElementById('idButtonClose');
+        if (closeBtn) {
+          closeBtn.click();
+          console.log('Close button clicked');
+        }
+      }, 1000);
     }
   }, 1000);
 }
