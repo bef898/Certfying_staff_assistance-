@@ -128,7 +128,7 @@ function extractWorkPackageInfoMultiple() {
           'OEM Part Number': getValueAfterLabel('OEM Part Number:'),
           'OEM Serial No': getValueAfterLabel('OEM Serial No:'),
           'Owner': getValueAfterLabel('Owner:'),
-          'Inventory': getValueAfterLabel('Inventory:')
+          'Inventory': getValueAfterLabel('Inventory Details :')
         }];
       }
     }, (results) => {
@@ -325,7 +325,7 @@ function showMultiRowTableModal(rows) {
     dataRow.appendChild(tdItem);
     // Description
     const tdDesc = document.createElement('td');
-    tdDesc.textContent = '';
+    tdDesc.textContent = row['Inventory Details '] || '';
     dataRow.appendChild(tdDesc);
     // OEM Part Number
     const tdPart = document.createElement('td');
