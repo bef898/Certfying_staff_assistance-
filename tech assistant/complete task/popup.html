@@ -8,7 +8,7 @@
    </style> 
 </head>
 <body>
-  <img id="icon" src="C:\Users\befekadum\Documents\CS\Certfying_staff_assistance-\tech\icons\icon128.png" alt="Extension Icon">
+  <img id="icon" src="../tech assistant/icons/icon128.png" alt="Extension Icon">
   <div class="container">
     <div class="header">
       <h1>Tech assistant</h1>
@@ -43,10 +43,12 @@
         <span class="checkmark"></span>
         <span>Check all checkboxes</span>
       </label>
-
-      
-    </div>
-
+       <label class="checkbox-container">
+          <input type="checkbox" id="clickOkButton" checked>
+          <span class="checkmark"></span>
+          <span>Click "OK" button</span>
+        </label>
+                </div>
     <button id="fillFields" class="action-button">
       <span class="button-text">EXECUTE</span>
       <svg class="button-icon" viewBox="0 0 24 24">
@@ -58,14 +60,7 @@
       Ready to fill fields
     </div>
   </div>
-  <div class="options">
-    <!-- Previous checkboxes... -->
-    <label class="checkbox-container">
-      <input type="checkbox" id="clickOkButton" checked>
-      <span class="checkmark"></span>
-      <span>Click "OK" button</span>
-    </label>
-  </div>
+  
   <script src="popup.js"></script>
 </body>
 </html>

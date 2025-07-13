@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "TECHNICIAN ASSISTANT",
+    "version": "1.0",
+    "description": "Professional form automation tool",
+    "action": {
+        "default_popup": "welcome.html",
+        "default_icon": {
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
+    },
+    "permissions": ["activeTab", "scripting"],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"],
+            "css": ["styles.css"]
+        }
+    ]
+}
