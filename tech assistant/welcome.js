@@ -17,6 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('Coming soon!');
   });
   document.getElementById('ridCollectorCard').addEventListener('click', () => {
-    collectRSVWords();
+    collectAndAutomateRSV();
   });
 });
